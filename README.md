@@ -1,3 +1,15 @@
+# EVERNOTE CLONE
+This is a repo for managing my project on building Evernote Clone web app using React JS + Material UI + React-quill + Firebase guided by [freeCodeCamp.org](https://youtu.be/I250xdtUvy8) on Youtube.
+
+If you wanna create another app like this, you need to do some stuff below:
+1. `create-react-app evernote-clone`
+2. go inside the project root folder
+3. `npm install @material-ui/core`
+4. `npm install @material-ui/icons`
+5. `npm install react-quill`
+6. `npm install firebase`
+7. setup project & app in firebase console
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
