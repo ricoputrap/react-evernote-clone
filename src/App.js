@@ -104,8 +104,10 @@ class App extends React.Component {
     });
   }
 
-  deleteNote = (note) => {
+  deleteNote = async (note) => {
     const noteId = this.state.notes.indexOf(note);
+
+    await this.setState({ notes: this.state.notes.filter(_note => _note !== note)})
 
     // unselect the note to deactivate editor
     if (this.state.selectedNoteIndex === noteId) {
