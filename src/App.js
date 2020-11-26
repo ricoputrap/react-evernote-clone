@@ -28,7 +28,8 @@ class App extends React.Component {
             <EditorComponent
               selectedNote={this.state.selectedNote}
               selectedNoteIndex={this.state.selectedNoteIndex}
-              notes={this.state.notes}></EditorComponent>
+              notes={this.state.notes}
+              noteUpdate={this.noteUpdate}></EditorComponent>
         }
       </div>
     );
@@ -56,6 +57,23 @@ class App extends React.Component {
       selectedNoteIndex: index,
       selectedNote: note
     });
+  }
+
+  /**
+   * Updates notes simultaneously to firestore
+   * @param {Number} id 
+   * @param {Object} note 
+   */
+  noteUpdate = (id, note) => {
+    firebase
+      .firestore()
+      .collection('notes')
+      .doc(id)
+      .update({
+        title: note.title,
+        body: note.body,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      })
   }
 }
 
