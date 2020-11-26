@@ -22,7 +22,8 @@ class App extends React.Component {
           notes={this.state.notes}
           deleteNote={this.deleteNote}
           selectNote={this.selectNote}
-          addNote={this.addNote}></SidebarComponent>
+          addNote={this.addNote}
+          deleteNote={this.deleteNote}></SidebarComponent>
         { 
           this.state.selectedNote &&
             <EditorComponent
@@ -102,6 +103,27 @@ class App extends React.Component {
       selectedNoteIndex: newNoteIndex
     });
   }
+
+  deleteNote = (note) => {
+    const noteId = this.state.notes.indexOf(note);
+
+    // unselect the note to deactivate editor
+    if (this.state.selectedNoteIndex === noteId) {
+        this.setState({ selectedNoteIndex: null, selectedNote: null });
+    }
+
+    // re-select note to before this deleted note
+    if (this.state.notes.length > 1) {
+        this.selectNote(this.state.notes[this.state.selectedNoteIndex - 1], this.state.selectedNoteIndex - 1);
+    }
+
+    // delete the note in the firestore
+    firebase
+      .firestore()
+      .collection('notes')
+      .doc(note.id)
+      .delete();
+}
 }
 
 export default App;
