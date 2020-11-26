@@ -22,7 +22,7 @@ class App extends React.Component {
           notes={this.state.notes}
           deleteNote={this.deleteNote}
           selectNote={this.selectNote}
-          newNote={this.newNote}></SidebarComponent>
+          addNote={this.addNote}></SidebarComponent>
         { 
           this.state.selectedNote &&
             <EditorComponent
@@ -74,6 +74,33 @@ class App extends React.Component {
         body: note.body,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       })
+  }
+
+  addNote = async (title) => {
+    const newNote = {
+      title: title,
+      body: '',
+    }
+    const newFromDB = await firebase
+      .firestore()
+      .collection('notes')
+      .add({
+        ...newNote,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    
+    // adds the new note to be displayed in list of notes
+    await this.setState({ notes: [...this.state.notes, newNote] });
+    
+    // updates the currently active editor with the new note
+    const newIdFromDB = newFromDB.id;
+    const newNoteIndex = this.state.notes.indexOf(
+      this.state.notes.filter(note => note.id === newIdFromDB)[0]
+    );
+    this.setState({
+      selectedNote: this.state.notes[newNoteIndex],
+      selectedNoteIndex: newNoteIndex
+    });
   }
 }
 
